@@ -1,0 +1,190 @@
+:root{
+    --bg: #0f1320;
+    --panel: #12172b;
+    --panel-2: #171d36;
+    --text: #eaf0ff;
+    --muted: #b9c2dc;
+    --accent: #ffcc01; /* Pokémon yellow */
+    --accent-2: #e60012; /* Poké red */
+    --ring: rgba(255,255,255,.25);
+
+    /* Type colors (primary) */
+    --normal:#A8A77A; --fire:#EE8130; --water:#6390F0; --electric:#F7D02C; --grass:#7AC74C;
+    --ice:#96D9D6; --fighting:#C22E28; --poison:#A33EA1; --ground:#E2BF65; --flying:#A98FF3;
+    --psychic:#F95587; --bug:#A6B91A; --rock:#B6A136; --ghost:#735797; --dragon:#6F35FC;
+    --dark:#705746; --steel:#B7B7CE; --fairy:#D685AD;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+    margin:0; font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    color:var(--text); background: var(--bg);
+    /* Pokéball pattern bg */
+    background-image:
+    radial-gradient(circle at 25px 25px, rgba(255,255,255,.04) 0 12px, transparent 13px),
+    radial-gradient(circle at 25px 25px, rgba(255,0,0,.06) 0 6px, transparent 7px);
+    background-size: 50px 50px, 50px 50px;
+}
+
+.wrap{max-width:1200px; margin-inline:auto; padding:24px;}
+
+header{
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+    margin-bottom:18px; position:sticky; top:0; z-index:5;
+    background:linear-gradient(180deg, rgba(15,19,32,.9), rgba(15,19,32,.65));
+    backdrop-filter: blur(8px);
+    padding:14px 20px; border-radius:18px; border:1px solid rgba(255,255,255,.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+.logo{
+    display:flex; align-items:center; gap:12px;
+    padding-right:12px; border-right:1px dashed rgba(255,255,255,.08);
+}
+.pokeball{ width:44px; height:44px; border-radius:50%; background:
+    radial-gradient(circle at 50% 50%, #fff 0 10px, #e9eefb 11px 11px, transparent 12px) ,
+    linear-gradient(#e60012 0 50%, #fff 0 100%);
+    border:3px solid #000; position:relative; box-shadow: inset 0 0 0 3px #000, 0 4px 10px rgba(0,0,0,.5);
+}
+.pokeball:before{content:""; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%);
+    width:18px; height:18px; border:3px solid #000; border-radius:50%; background:#d9f4ff; box-shadow: inset 0 0 0 3px #fff;}
+
+h1{ font-family: "Press Start 2P", system-ui; font-size: clamp(18px, 2.4vw, 28px); line-height:1.2; margin:0; letter-spacing:1px; }
+.tag{ font-weight:900; color:var(--bg); background:linear-gradient(135deg, var(--accent), #ffe36f);
+    padding:6px 10px; border-radius:999px; text-transform:uppercase; font-size:12px; letter-spacing:.5px;}
+
+.controls{ display:flex; flex-wrap:wrap; gap:12px; margin-left:auto; align-items:center; }
+.search{ position:relative; }
+.search input{
+    background:var(--panel); border:1px solid rgba(255,255,255,.08); color:var(--text);
+    padding:12px 14px 12px 40px; border-radius:14px; outline:none; min-width:260px;
+    box-shadow: inset 0 0 0 1px transparent, 0 10px 20px rgba(0,0,0,.3);
+}
+.search .icon{ position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.7 }
+
+.filters{
+    margin-top:16px; display:flex; flex-wrap:wrap; gap:10px; padding:14px; border-radius:16px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid rgba(255,255,255,.06);
+}
+.filters legend{ padding:0 6px; font-weight:900; color:var(--muted); }
+.chip{ --c: #888; display:inline-flex; align-items:center; gap:8px; user-select:none; cursor:pointer;
+    border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.02); padding:8px 12px; border-radius:999px; font-weight:700; }
+.chip input{appearance:none; width:14px; height:14px; outline:2px solid rgba(255,255,255,.25); border-radius:3px; display:grid; place-items:center}
+.chip input:checked{ outline-color:var(--c); background:var(--c)}
+
+/* Pokédex grid */
+.grid{ display:grid; gap:16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); margin-top:18px; }
+
+.card{
+    position:relative; padding:14px; border-radius:18px; overflow:hidden; isolation:isolate;
+    background: radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,.06), transparent 60%),
+                linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.08));
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card:hover{ transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.45); border-color: rgba(255,255,255,.18)}
+
+.card .num{ position:absolute; top:10px; left:12px; font-weight:900; color:rgba(255,255,255,.35); font-size:12px; }
+.sprite{ width:160px; height:160px; margin: 6px auto 8px; display:block; filter: drop-shadow(0 12px 16px rgba(0,0,0,.5)); }
+.name{ font-size:20px; font-weight:900; text-align:center; margin:2px 0 8px; text-transform:capitalize; letter-spacing:.4px }
+.types{ display:flex; justify-content:center; gap:8px; flex-wrap:wrap }
+
+.badge{ --b:#999; --t:#000; font-weight:900; font-size:12px; text-transform:uppercase; letter-spacing:.4px;
+    color:var(--t); background:linear-gradient(180deg, var(--b), color-mix(in oklab, var(--b), black 20%));
+    padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.2);}
+
+.meta{ margin-top:10px; display:flex; align-items:center; justify-content:space-between; color:var(--muted); font-size:12px }
+
+/* Accent ring by main type */
+.card::after{ content:""; position:absolute; inset:-40% -40% auto auto; aspect-ratio:1; width:180px; border-radius:50%;
+    z-index:-1; opacity:.28; filter:blur(6px);
+    background: radial-gradient(circle, var(--accent-2), transparent 60%);
+}
+
+/* Map main type => CSS var --b on badges */
+.type-normal { --b: var(--normal); --t:#111 }
+.type-fire { --b: var(--fire) }
+.type-water { --b: var(--water) }
+.type-electric { --b: var(--electric); --t:#111 }
+.type-grass { --b: var(--grass); --t:#111 }
+.type-ice { --b: var(--ice); --t:#111 }
+.type-fighting { --b: var(--fighting) }
+.type-poison { --b: var(--poison) }
+.type-ground { --b: var(--ground); --t:#111 }
+.type-flying { --b: var(--flying) }
+.type-psychic { --b: var(--psychic) }
+.type-bug { --b: var(--bug) }
+.type-rock { --b: var(--rock) }
+.type-ghost { --b: var(--ghost) }
+.type-dragon { --b: var(--dragon) }
+.type-dark { --b: var(--dark) }
+.type-steel { --b: var(--steel) }
+.type-fairy { --b: var(--fairy) }
+
+/* PURE CSS filtering using :has() — Chrome/Edge/Safari/Firefox modern */
+.pokedex:has(#type-fire:checked) .card:not([data-type~="fire"]) { display:none }
+.pokedex:has(#type-water:checked) .card:not([data-type~="water"]) { display:none }
+.pokedex:has(#type-grass:checked) .card:not([data-type~="grass"]) { display:none }
+.pokedex:has(#type-electric:checked) .card:not([data-type~="electric"]) { display:none }
+.pokedex:has(#type-psychic:checked) .card:not([data-type~="psychic"]) { display:none }
+.pokedex:has(#type-ice:checked) .card:not([data-type~="ice"]) { display:none }
+.pokedex:has(#type-fighting:checked) .card:not([data-type~="fighting"]) { display:none }
+.pokedex:has(#type-poison:checked) .card:not([data-type~="poison"]) { display:none }
+.pokedex:has(#type-ground:checked) .card:not([data-type~="ground"]) { display:none }
+.pokedex:has(#type-flying:checked) .card:not([data-type~="flying"]) { display:none }
+.pokedex:has(#type-bug:checked) .card:not([data-type~="bug"]) { display:none }
+.pokedex:has(#type-rock:checked) .card:not([data-type~="rock"]) { display:none }
+.pokedex:has(#type-ghost:checked) .card:not([data-type~="ghost"]) { display:none }
+.pokedex:has(#type-dragon:checked) .card:not([data-type~="dragon"]) { display:none }
+.pokedex:has(#type-dark:checked) .card:not([data-type~="dark"]) { display:none }
+.pokedex:has(#type-steel:checked) .card:not([data-type~="steel"]) { display:none }
+.pokedex:has(#type-fairy:checked) .card:not([data-type~="fairy"]) { display:none }
+
+/* If multiple chips checked, still show matches to ANY checked type */
+.pokedex:has(.filters input:checked) .card{ display:none }
+.pokedex:has(.filters input:checked) .card[data-type~="fire"]{ display: initial }
+.pokedex:has(#type-water:checked) .card[data-type~="water"]{ display: initial }
+.pokedex:has(#type-grass:checked) .card[data-type~="grass"]{ display: initial }
+.pokedex:has(#type-electric:checked) .card[data-type~="electric"]{ display: initial }
+.pokedex:has(#type-psychic:checked) .card[data-type~="psychic"]{ display: initial }
+.pokedex:has(#type-ice:checked) .card[data-type~="ice"]{ display: initial }
+.pokedex:has(#type-fighting:checked) .card[data-type~="fighting"]{ display: initial }
+.pokedex:has(#type-poison:checked) .card[data-type~="poison"]{ display: initial }
+.pokedex:has(#type-ground:checked) .card[data-type~="ground"]{ display: initial }
+.pokedex:has(#type-flying:checked) .card[data-type~="flying"]{ display: initial }
+.pokedex:has(#type-bug:checked) .card[data-type~="bug"]{ display: initial }
+.pokedex:has(#type-rock:checked) .card[data-type~="rock"]{ display: initial }
+.pokedex:has(#type-ghost:checked) .card[data-type~="ghost"]{ display: initial }
+.pokedex:has(#type-dragon:checked) .card[data-type~="dragon"]{ display: initial }
+.pokedex:has(#type-dark:checked) .card[data-type~="dark"]{ display: initial }
+.pokedex:has(#type-steel:checked) .card[data-type~="steel"]{ display: initial }
+.pokedex:has(#type-fairy:checked) .card[data-type~="fairy"]{ display: initial }
+
+footer{ 
+    text-align:center; color:var(--muted); margin:30px 0 10px; font-size:12px 
+}
+a{ 
+    color: var(--accent) 
+}
+.searchPokemon {
+background: linear-gradient(135deg, var(--accent-2), #ff4d4d);
+color: #fff;
+border: none;
+padding: 12px 18px;
+border-radius: 14px;
+font-weight: 900;
+text-transform: uppercase;
+cursor: pointer;
+box-shadow: 0 6px 14px rgba(0,0,0,.4);
+transition: transform .15s ease, box-shadow .15s ease;
+}
+.searchPokemon:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 20px rgba(0,0,0,.5);
+}
+.searchPokemon:active {
+transform: translateY(1px);
+box-shadow: 0 4px 10px rgba(0,0,0,.4);
+}
